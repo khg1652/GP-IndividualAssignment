@@ -19,4 +19,14 @@ public class BulletScript : MonoBehaviour
     {
         transform.Translate(0, 0, speed * Time.deltaTime);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Base에 도착하면 공격 처리
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("3");
+            gameObject.SetActive(false);
+        }
+    }
 }

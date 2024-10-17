@@ -9,6 +9,8 @@ public class EnemySpawn : MonoBehaviour
     public float endTime;
     public float spawnRate;
     public float rotationSpeed;
+    public float spawnRangeX = 100f; // X축 랜덤 범위
+    public float spawnRangeZ = 100f; // Z축 랜덤 범위
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +19,11 @@ public class EnemySpawn : MonoBehaviour
     }
     void Spawn()
     {
-        Instantiate(prefab, transform.position, transform.rotation);
+        float randomX = Random.Range(-spawnRangeX, spawnRangeX);
+        float randomZ = Random.Range(-spawnRangeZ, spawnRangeZ);
+        Vector3 spawnPosition = new Vector3(randomX, 0f, randomZ) + transform.position;
+        //Debug.Log(spawnPosition);
+        Instantiate(prefab, spawnPosition, transform.rotation);
     }
 
     // Update is called once per frame

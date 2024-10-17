@@ -10,6 +10,7 @@ public class PlayerShooting : MonoBehaviour
     public Color redColor = Color.red;   // 빨간색
     public Color blueColor = Color.blue; // 파란색
     private Color currentColor;
+    private string currentTag = "Bullet";
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +26,15 @@ public class PlayerShooting : MonoBehaviour
             GameObject clone = Instantiate(prefab);
             clone.transform.position = shootPoint.transform.position;
             clone.transform.rotation = shootPoint.transform.rotation;
+
             Renderer bulletRenderer = clone.GetComponent<Renderer>();
             bulletRenderer.material.color = currentColor;
+            clone.tag = currentTag;
+            if(currentTag == "Bullet")
+                clone.transform.localScale = new Vector3(2f, 2f, 2f);
+            if (currentTag == "Bullet2")
+                clone.transform.localScale = new Vector3(4f, 4f, 4f);
+
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -39,10 +47,12 @@ public class PlayerShooting : MonoBehaviour
         if (currentColor == redColor)
         {
             currentColor = blueColor;
+            currentTag = "Bullet2";
         }
         else
         {
             currentColor = redColor;
+            currentTag = "Bullet";
         }
     }
 }
