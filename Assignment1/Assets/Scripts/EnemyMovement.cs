@@ -8,6 +8,9 @@ public class EnemyMovement : MonoBehaviour
     public Transform baseTarget;  // Base 오브젝트의 위치
     private NavMeshAgent agent;
     public Base baseobject;
+    public GameObject blueHitEffect;
+    public GameObject redHitEffect;
+    public GameObject enemyDisappearEffect; // Base 도달 시 파티클 효과
 
     void Start()
     {
@@ -28,10 +31,15 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         // Base로 이동
-        if (baseTarget != null)
+        if (baseTarget == null)
+            return;
+        if (!baseTarget.gameObject.activeInHierarchy)
         {
-            agent.SetDestination(baseTarget.position);
+            agent.isStopped = true;
+            return;
         }
+
+        agent.SetDestination(baseTarget.position);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -40,17 +48,20 @@ public class EnemyMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Base"))
         {
             Debug.Log("2");
+            Instantiate(enemyDisappearEffect, collision.contacts[0].point, Quaternion.identity);
             gameObject.SetActive(false);
         }
         if (collision.gameObject.CompareTag("Bullet"))
         {
             Debug.Log("3");
+            Instantiate(redHitEffect, collision.contacts[0].point, Quaternion.identity);
             gameObject.SetActive(false);
         }
         if (collision.gameObject.CompareTag("Bullet2"))
         {
             Debug.Log("4");
             // 충돌한 객체가 Bullet2인 경우
+            Instantiate(blueHitEffect, collision.contacts[0].point, Quaternion.identity);
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null)
             {

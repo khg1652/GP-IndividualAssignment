@@ -124,6 +124,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseTarget: {fileID: 0}
   baseobject: {fileID: 0}
+  blueHitEffect: {fileID: 8653044936118042322, guid: 78330dcbc1f9074419a4bc08741b81ab,
+    type: 3}
+  redHitEffect: {fileID: 4412706449460766939, guid: e0cb233c33ce6df4eb1fc1646895f785,
+    type: 3}
+  enemyDisappearEffect: {fileID: 7002667526113129985, guid: f524ca7b0ee0374449a35030945a5da5,
+    type: 3}
 --- !u!136 &961453564310743419
 CapsuleCollider:
   m_ObjectHideFlags: 0
