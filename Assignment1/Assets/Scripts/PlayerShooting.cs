@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro; // TextMeshPro 사용
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -11,16 +12,24 @@ public class PlayerShooting : MonoBehaviour
     public Color blueColor = Color.blue; // 파란색
     private Color currentColor;
     private string currentTag = "Bullet";
+    public AudioClip tigerSound;
+    public TMP_Text bulletStateText;
+    Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         currentColor = redColor;
+        bulletStateText.text = "Red";
+        bulletStateText.color = redColor;
+        UpdateBulletStateUI();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !GameManager.instance.isPaused)
         {
             //Instantiate(prefab, transform.position, transform.rotation);
             GameObject clone = Instantiate(prefab);
@@ -34,7 +43,8 @@ public class PlayerShooting : MonoBehaviour
                 clone.transform.localScale = new Vector3(2f, 2f, 2f);
             if (currentTag == "Bullet2")
                 clone.transform.localScale = new Vector3(4f, 4f, 4f);
-
+            PlaySound(tigerSound);
+            anim.SetTrigger("jump");
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -53,6 +63,38 @@ public class PlayerShooting : MonoBehaviour
         {
             currentColor = redColor;
             currentTag = "Bullet";
+        }
+        UpdateBulletStateUI();
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (clip == null) return;
+
+        GameObject audioObject = new GameObject("TempAudio");
+        AudioSource tempSource = audioObject.AddComponent<AudioSource>();
+        tempSource.volume = 0.2f;
+        tempSource.clip = clip;
+        tempSource.Play();
+
+        Destroy(audioObject, clip.length);
+    }
+
+    private void UpdateBulletStateUI()
+    {
+        // Bullet 상태에 따라 UI 텍스트 변경
+        if (bulletStateText != null)
+        {
+            if (currentTag == "Bullet")
+            {
+                bulletStateText.text = "Red";
+                bulletStateText.color = redColor;
+            }
+            else if (currentTag == "Bullet2")
+            {
+                bulletStateText.text = "Blue";
+                bulletStateText.color = blueColor;
+            }
         }
     }
 }

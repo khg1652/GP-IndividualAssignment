@@ -12,10 +12,16 @@ public class EnemyMovement : MonoBehaviour
     public GameObject redHitEffect;
     public GameObject enemyDisappearEffect; // Base 도달 시 파티클 효과
 
+    public AudioClip catSound;
+    public AudioClip deerSound;
+    public AudioClip explosionSound;
+    Animator anim;
+
     void Start()
     {
         // NavMeshAgent 컴포넌트를 가져옴
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
 
         // Base 오브젝트의 Transform을 찾아서 타겟으로 설정
         if (baseTarget == null)
@@ -40,6 +46,17 @@ public class EnemyMovement : MonoBehaviour
         }
 
         agent.SetDestination(baseTarget.position);
+
+        float speed = agent.velocity.magnitude;
+        if(speed <= 20f)
+        {
+            anim.SetInteger("Walk", 1);
+        }
+        else if(speed >= 20f)
+        {
+            anim.SetInteger("Walk", 0);
+            anim.SetTrigger("jump");
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -49,12 +66,15 @@ public class EnemyMovement : MonoBehaviour
         {
             Debug.Log("2");
             Instantiate(enemyDisappearEffect, collision.contacts[0].point, Quaternion.identity);
+            PlaySound(explosionSound);
+            PlaySound(catSound);
             gameObject.SetActive(false);
         }
         if (collision.gameObject.CompareTag("Bullet"))
         {
             Debug.Log("3");
             Instantiate(redHitEffect, collision.contacts[0].point, Quaternion.identity);
+            PlaySound(deerSound);
             gameObject.SetActive(false);
         }
         if (collision.gameObject.CompareTag("Bullet2"))
@@ -69,7 +89,24 @@ public class EnemyMovement : MonoBehaviour
                 Vector3 knockbackDirection = collision.transform.forward;  // 총알의 Transform.forward 방향
                 float knockbackForce = 50f;  // 밀어내는 힘의 크기
                 rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+                PlaySound(deerSound);
             }
         }
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (clip == null) return;
+
+        GameObject audioObject = new GameObject("TempAudio");
+        AudioSource tempSource = audioObject.AddComponent<AudioSource>();
+        if (clip == deerSound)
+        {
+            tempSource.volume = 0.3f;
+        }
+        tempSource.clip = clip;
+        tempSource.Play();
+
+        Destroy(audioObject, clip.length);
     }
 }

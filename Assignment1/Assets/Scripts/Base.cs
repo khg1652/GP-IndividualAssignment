@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // Slider 사용
 
 public class Base : MonoBehaviour
 {
+    public int baseHealth = 100;  // Base의 현재 체력
+    public int maxHealth = 100;
+    public Slider baseHealthBar;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        baseHealth = maxHealth;
+        UpdateHealthUI();
     }
-
-    public int baseHealth = 100;  // Base의 체력
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -24,6 +27,7 @@ public class Base : MonoBehaviour
     void TakeDamage(int damage)
     {
         baseHealth -= damage;
+        UpdateHealthUI();
         if (baseHealth <= 0)
         {
             gameObject.SetActive(false);
@@ -35,5 +39,13 @@ public class Base : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void UpdateHealthUI()
+    {
+        if (baseHealthBar != null)
+        {
+            baseHealthBar.value = (float)baseHealth / maxHealth; // 슬라이더 비율 조정
+        }
     }
 }

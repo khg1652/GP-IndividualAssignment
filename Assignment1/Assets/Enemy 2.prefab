@@ -130,6 +130,9 @@ MonoBehaviour:
     type: 3}
   enemyDisappearEffect: {fileID: 7002667526113129985, guid: f524ca7b0ee0374449a35030945a5da5,
     type: 3}
+  catSound: {fileID: 8300000, guid: a9946bf3a4ae06a4e896ea8937b74804, type: 3}
+  deerSound: {fileID: 8300000, guid: 5c7f916f838e3534caf8bb4bcffdaae8, type: 3}
+  explosionSound: {fileID: 8300000, guid: 1a3071b9656add74b89debff52a46620, type: 3}
 --- !u!136 &961453564310743419
 CapsuleCollider:
   m_ObjectHideFlags: 0
