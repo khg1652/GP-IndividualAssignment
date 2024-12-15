@@ -96,6 +96,10 @@ public class GameManager : MonoBehaviour
         gameUI.SetActive(true);
         Time.timeScale = 1f;                  // 게임 시간 재개
     }
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 
     public void LoseGame()
     {
@@ -105,6 +109,7 @@ public class GameManager : MonoBehaviour
             // 게임 패배 처리
             Debug.Log("You Lose!");
             PlaySound(loseSound);
+            gameUI.SetActive(false);
             losePanel.SetActive(true);
         }
     }
@@ -117,6 +122,7 @@ public class GameManager : MonoBehaviour
             // 게임 승리 처리
             Debug.Log("You Win!");
             PlaySound(winSound);
+            gameUI.SetActive(false);
             winPanel.SetActive(true);
         }
     }
