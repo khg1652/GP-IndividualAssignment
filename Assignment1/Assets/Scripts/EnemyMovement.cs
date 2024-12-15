@@ -48,7 +48,7 @@ public class EnemyMovement : MonoBehaviour
         agent.SetDestination(baseTarget.position);
 
         float speed = agent.velocity.magnitude;
-        if(speed <= 20f)
+        if(speed <= 20f && speed > 0f)
         {
             anim.SetInteger("Walk", 1);
         }
